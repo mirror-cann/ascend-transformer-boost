@@ -22,7 +22,7 @@
 
 <img src="./images/原理2.png" alt="算子下发流程" style="width: 600; height: auto;">
 
-1. 合法性检查 
+1. 合法性检查
 
     检查算子输入、输出、参数是否符合算子要求， 防止错误参数提交到Device后导致错误。
 
@@ -63,7 +63,7 @@
 
 4. 获取Workspace大小
 
-    算子内部有时需要通过额外的HBM内存进行数据交换或者缓存， 这部分空间称为算子的Workspace。 需要在算子实际执行前分配好。 
+    算子内部有时需要通过额外的HBM内存进行数据交换或者缓存， 这部分空间称为算子的Workspace。 需要在算子实际执行前分配好。
 
     <img src="./images/原理5.png" alt="Workspace示例" style="width: 600; height:auto;">
 
@@ -71,7 +71,7 @@
 
 5. 分配Workspace
 
-    对于ATB和aclnn这样的两段式算子接口来说， 这个步骤一般由执行框架（如torch-npu）进行分配， 而不是算子内部实现。 这样外部框架可以管理整个模型执行过程中间的HBM资源， 提高分配效率。
+    对于ATB和aclnn这样的两段式算子接口来说， 这个步骤一般由执行框架（如TorchNPU）进行分配， 而不是算子内部实现。 这样外部框架可以管理整个模型执行过程中间的HBM资源， 提高分配效率。
 
 6. 算子下发
 
@@ -158,7 +158,7 @@ atb::Status CreateLlamaMlpOperationByGraphOpBuilder(const LlamaMlpParamGb &param
 
     ATB在图算子Setup阶段尽可能复用HBM， 使得整个图算子的Workspace size比内部单算子Workspace size的总和要小。具体方式如下：
 
-    - 一个流中的算子Kernel是顺序执行的， 所以前一个算子的Workspace可以给后一个算子使用。 
+    - 一个流中的算子Kernel是顺序执行的， 所以前一个算子的Workspace可以给后一个算子使用。
 
     - 一个图算子内部的中间Tensor不需要保留到图算子执行完毕， 只要最后一个使用它的单算子执行完毕后，就可以释放空间给其他Tensor使用。
 
@@ -176,5 +176,5 @@ atb::Status CreateLlamaMlpOperationByGraphOpBuilder(const LlamaMlpParamGb &param
 
     双线程下发优化（推荐使用）：通过双线程分别进行算子批量Setup和批量任务下发，可以同时减少host执行时间和NPU空泡。
     这种当时需要用户创建两个线程， 其中一个线程处理Setup， 另一个线程处理Execute。
-    
+
     <img src="./images/原理15.png" alt="多线程图算子下发优化" style="width: 600; height:auto;">
