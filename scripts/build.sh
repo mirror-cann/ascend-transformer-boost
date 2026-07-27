@@ -196,7 +196,7 @@ function fn_build_catlass()
         return 0
     fi
     cd $THIRD_PARTY_DIR
-    ref=v1.4.0
+    ref=v1.5.0
     echo  "current ref for catlass: $ref"
     git clone --branch $ref --depth 1 https://gitcode.com/cann/catlass.git
 }
@@ -278,7 +278,7 @@ function fn_copy_tbe_adapter()
         ATB_BUILD_DEPENDENCY_PATH=/usr/local/Ascend/nnal/atb/latest/atb/$(fn_get_cxx_abi_string)
         echo "warning: ATB_BUILD_DEPENDENCY_PATH is not set. Using default path: /usr/local/Ascend/nnal/atb/latest/atb/$(fn_get_cxx_abi_string)"
     fi
-    
+
     if [ ! -f $ATB_BUILD_DEPENDENCY_PATH/lib/libtbe_adapter.so ]; then
         echo "error:$ATB_BUILD_DEPENDENCY_PATH/lib/libtbe_adapter.so does not exist, please set correct ATB_BUILD_DEPENDENCY_PATH"
         return 0
@@ -312,6 +312,8 @@ function fn_build_tbe_dependency()
     #copy from nnal
     fn_copy_tbe_adapter
 }
+
+
 function fn_build_3rdparty_for_compile()
 {
     fn_build_nlohmann_json
@@ -383,7 +385,7 @@ function export_atb_env()
 {
     # only export once
     if [ $ENV_FLAG -eq 1 ]; then
-        echo "skip export env beacuse already done"
+        echo "skip export env because already done"
         return
     fi
     export LD_LIBRARY_PATH=/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver:${LD_LIBRARY_PATH}
@@ -770,7 +772,7 @@ function fn_main()
         if [[ "$cfg_flag" == 1 ]]; then
             arg1="default"
         else
-            echo "argument $1 is unknown, please type build.sh help for more imformation"
+            echo "argument $1 is unknown, please type build.sh help for more information"
             exit 1
         fi
     fi
