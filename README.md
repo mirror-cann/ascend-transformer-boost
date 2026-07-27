@@ -6,11 +6,11 @@
 
 ### ATB介绍
 
-Ascend Transformer Boost加速库（下文简称为ATB加速库）是一款高效、可靠的加速库，基于华为Ascend AI处理器，专门为Transformer模型的训练和推理而设计。具体的工作原理可以参考[ATB加速原理](docs/ATB加速原理.md)。 
+Ascend Transformer Boost加速库（下文简称为ATB加速库）是一款高效、可靠的加速库，基于华为Ascend AI处理器，专门为Transformer模型的训练和推理而设计。具体的工作原理可以参考[ATB加速原理](docs/ATB加速原理.md)。
 
 ### 软件架构
 
-![架构图](docs/images/架构图.png)  
+![架构图](docs/images/架构图.png)
 ATB的架构图如上图所示，其接口功能主要分成三部分：
 
 - 提供经过优化的融合算子（Operation），用户可以根据需求使用对应的算子完成计算功能。
@@ -90,7 +90,7 @@ chmod +x Ascend-cann-toolkit_${VERSION}_linux-$(arch).run  # 其中${VERSION}表
 
 ```sh
 source ${HOME}/Ascend/ascend-toolkit/set_env.sh
-```  
+```
 
 安装业务运行时依赖的Python第三方库（如果使用root用户安装，请将命令中的--user删除）。
 
@@ -105,9 +105,9 @@ pip3 install attrs cython 'numpy>=1.19.2,<=1.24.0' decorator sympy cffi pyyaml p
 ```shell
 chmod +x Ascend-cann-${chip_type}-ops_${VERSION}_linux-$(arch).run  #其中${chip_type}表示昇腾产品类型，如A3
 ./Ascend-cann-${chip_type}-ops_${VERSION}_linux-$(arch).run --install
-```  
+```
 
-### CANN详细安装指南 
+### CANN详细安装指南
 
 开发者可访问[昇腾文档-昇腾社区](https://www.hiascend.com/document)->CANN社区版->软件安装，查看CANN软件安装引导，根据机器环境、操作系统和业务场景选择后阅读详细安装步骤。
 
@@ -133,7 +133,7 @@ chmod +x Ascend-cann-${chip_type}-ops_${VERSION}_linux-$(arch).run  #其中${chi
     ```
 
    您可自行选择需要的分支。
- - 环境变量设置  
+ - 环境变量设置
     在编译前，需要安装nnal软件包。若 nnal 安装在默认位置（`/usr/local/Ascend/nnal/...`），无需设置`ATB_BUILD_DEPENDENCY_PATH`，脚本会按检测到的 ABI 自动使用该路径。若安装在非默认位置，需手动设置（其中`{cxx_abi_version}`取`0`或`1`）。详见[常见问题与回答](docs/常见问题与回答.md)。
 
     ```sh
@@ -141,7 +141,7 @@ chmod +x Ascend-cann-${chip_type}-ops_${VERSION}_linux-$(arch).run  #其中${chi
     ```
 
     注：若此前已用其他 ABI 编译过，切换 ABI 后须执行`bash scripts/build.sh --clean-first`清理编译缓存再重新编译，否则残留的 CMake 缓存与已拷贝的`libtbe_adapter.so`会导致 ABI 不匹配或链接错误。同样，若安装或更换 PyTorch 导致 ABI 判别结果改变，也需重新设置`ATB_BUILD_DEPENDENCY_PATH`并`--clean-first`全量重编译。
- - 加速库编译  
+ - 加速库编译
     编译加速库，设置加速库环境变量：
 
     ```sh
@@ -159,11 +159,11 @@ chmod +x Ascend-cann-${chip_type}-ops_${VERSION}_linux-$(arch).run  #其中${chi
 
 #### Python
 
-在运行python代码前，需要导入ATB Python API模块torch_atb，该插件运行依赖PyTorch和torch_npu，可访问[加速库包安装部署](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta1/API/ascendtb/ascendtb_0034.html)查看版本要求和安装指导。  
-安装PyTorch和torch_npu之后，需要手动安装torch_atb，安装方法包含以下两种：
+在运行python代码前，需要导入ATB Python API模块torch_atb，该插件运行依赖PyTorch和TorchNPU，可访问[加速库包安装部署](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta1/API/ascendtb/ascendtb_0034.html)查看版本要求和安装指导。
+安装PyTorch和TorchNPU之后，需要手动安装torch_atb，安装方法包含以下两种：
 
 - 通过`./Ascend-cann-nnal_${version_info}_linux-aarch64.run --install --torch_atb`命令安装
-- 在编译步骤中使用`bash scripts/build.sh --torch_atb`编译命令，`output/whl`文件夹下会生成torch_atb的whl文件，您可使用如下命令进行安装:
+- 在编译步骤中使用`bash scripts/build.sh --torch_atb`编译命令，`output/whl`文件夹下会生成torch_atb的whl文件，您可使用如下命令进行安装：
 
     ```sh
     pip3 install torch_atb-{version}-py3-none-any.whl
@@ -183,11 +183,11 @@ linear_param.has_bias = False
 op = torch_atb.Operation(linear_param)
 
 #准备输入数据
-x = torch.randn(2, 3, dtype=torch.float16).npu()  
+x = torch.randn(2, 3, dtype=torch.float16).npu()
 y = torch.randn(2, 3, dtype=torch.float16).npu()
 
 #使用forward方法完成操作，并获取输出
-outputs = op.forward([x, y]) 
+outputs = op.forward([x, y])
 torch.npu.synchronize()
 ```
 
@@ -281,11 +281,11 @@ ATB不推荐用户直接将样例作为业务代码，也不保证此种做法�
 您可参考以下文档进行自定义算子的开发：
 
 - [从开发一个简单算子开始](docs/从开发一个简单算子出发.md)：以简单的Add算子的增加为例，介绍了ATB算子开发的交付件和开发流程，适合新入门的选手。
-- [开发指南](docs/开发指南.md)：以一个融合算子为例，详细介绍了ATB算子开发的流程，以及如何对算子进行功能、精度、性能测试。  
+- [开发指南](docs/开发指南.md)：以一个融合算子为例，详细介绍了ATB算子开发的流程，以及如何对算子进行功能、精度、性能测试。
 **注意**：您在开发过程中遇到的问题，可参考[ATB日志与调试](docs/日志与调试.md)尝试解决。
 
 ## 五、参与贡献
- 
+
 1. fork仓库
 2. 修改并提交代码
 3. 新建 Pull-Request
@@ -305,5 +305,5 @@ ATB不推荐用户直接将样例作为业务代码，也不保证此种做法�
 
 ## 七、参考文档
 
-**[CANN社区版文档](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta1/index/index.html)**  
+**[CANN社区版文档](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta1/index/index.html)**
 **[ATB社区版文档](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/910beta1/API/ascendtb/ascendtb_0001.html)**
