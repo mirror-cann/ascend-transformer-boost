@@ -107,10 +107,11 @@ function fn_build_catlass()
         return $?
     fi
     cd $THIRD_PARTY_DIR
-    ref=v1.4.0
+    ref=v1.5.0
     echo  "current ref for catlass: $ref"
     git clone --branch $ref --depth 1 https://gitcode.com/cann/catlass.git
 }
+
 
 function select_compiler()
 {
