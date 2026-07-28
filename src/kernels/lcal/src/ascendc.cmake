@@ -26,6 +26,7 @@ set(CCE_COMPILE_OPTION
     -O2 -std=gnu++17
     --cce-aicore-only
     -Wno-deprecated-declarations
+    -Wno-macro-redefined
     ${SANITIZER_FLAGS}
     "SHELL:-mllvm -cce-aicore-long-call"
     "SHELL:-mllvm -cce-aicore-function-stack-size=16000"
@@ -49,4 +50,4 @@ include_directories(
     ${CCE_INCLUDE_BASE}/tikcpp/tikcfw/
     ${CCE_INCLUDE_BASE}/tikcpp/tikcfw/interface/
     ${CCE_INCLUDE_BASE}/tikcpp/tikcfw/impl/
-) 
+)
